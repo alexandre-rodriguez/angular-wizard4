@@ -25,24 +25,53 @@ export class AppComponent {
 
   isCompleted: boolean = false;
 
-  onStep1Next(event: any) {
-    console.log('Step1 - Next');
+  onNextWizard() {
+    console.log('onNextWizard ');
   }
 
-  onStep2Next(event: any) {
-    console.log('Step2 - Next');
+  onPrevWizard() {
+    console.log('onPrevWizard ');
   }
 
-  onStep3Next(event: any) {
-    console.log('Step3 - Next');
+  onCompleteWizard() {
+    console.log('onPrevWizard ');
   }
 
-  onComplete(event: any) {
+  onStep1Next() {
+    console.log('Botão Próximo - Chamou o next do passo 01');
+  }
+
+  onStep2Next() {
+    console.log('Botão Próximo - Chamou o next do passo 02');
+  }
+
+  onStep2Previous() {
+    console.log('Botão Voltar - Chamou o next do passo 02');
+  }
+
+  onStep3Next() {
+    console.log('Botão Próximo - Chamou o next do passo 03');
+  }
+
+  onStep3Previous() {
+    console.log('Botão Voltar - Chamou o next do passo 03');
+  }
+
+  onStep4Previous() {
+    console.log('Botão Voltar - Chamou o next do passo 04');
+  }
+
+  onStepHidden(evento: boolean) {
+    console.log('esconder passo oculto ->', evento);
+  }
+
+  onComplete() {
+    console.log('Chamou o complete');
     this.isCompleted = true;
   }
 
   onStepChanged(step: StepComponent) {
-    console.log('Changed to ' + step.title);
+    console.log('Mudou para ' + step.title);
   }
 
 }

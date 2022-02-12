@@ -1,4 +1,12 @@
-import { AfterContentInit, Component, ContentChildren, EventEmitter, OnInit, Output, QueryList } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChildren,
+  EventEmitter,
+  OnInit,
+  Output,
+  QueryList,
+} from '@angular/core';
 import { StepComponent } from './step/step.component';
 
 @Component({
@@ -16,34 +24,33 @@ export class WizardComponent implements OnInit, AfterContentInit {
   @Output()
   onStepChanged: EventEmitter<StepComponent> = new EventEmitter<StepComponent>();
 
-  @Output() onNext: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onPrev: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onComplete: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  onNext: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  onPrev: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  onComplete: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.iniSteps();
-  }
-
-  iniSteps() {
-    this._steps = [];
-    if (this.wizardSteps) {
-      this.wizardSteps.forEach((step) => {
-        step.onHiddenEvent.subscribe(() => {
-          if (step.isActive) {
-            this.steps[0].isActive = true;
-          }
-        });
-        this._steps.push(step);
-      });
-      this.steps[0].isActive = true;
-      this.onStepChanged.emit(this.steps[0]);
-    }
-  }
+  ngOnInit(): void {}
 
   ngAfterContentInit() {
-    this.wizardSteps.forEach((step) => this._steps.push(step));
+    this.wizardSteps.forEach((step) => {
+      /* step.onHidden.subscribe((x: any) => {
+        let indexAtual = this._steps.indexOf(x.step)!;
+        this._steps.map((step, index) => {
+          if (indexAtual < index) {
+            step.isDisabled = true;
+          }
+        });
+      }); */
+
+      this._steps.push(step);
+    });
+
     this.steps[0].isActive = true;
   }
 
@@ -56,13 +63,7 @@ export class WizardComponent implements OnInit, AfterContentInit {
   }
 
   get activeStep(): StepComponent {
-    let step = this.steps.find((step) => step.isActive);
-
-    if (step) {
-      return step;
-    }
-
-    return this.steps[0];
+    return this.steps.find((step) => step.isActive)!;
   }
 
   set activeStep(step: StepComponent) {

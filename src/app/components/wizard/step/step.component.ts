@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-
 @Component({
   selector: 'pucx-step',
   templateUrl: './step.component.html',
@@ -29,7 +28,7 @@ export class StepComponent implements OnInit {
   onComplete: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
-  onHiddenEvent: EventEmitter<any> = new EventEmitter<any>();
+  onHidden: EventEmitter<any> = new EventEmitter<any>();
 
   private _isActive: boolean = false;
   private _hidden = false;
@@ -42,8 +41,9 @@ export class StepComponent implements OnInit {
   @Input('hidden')
   set hidden(hidden: boolean) {
     this._hidden = hidden;
-    this.onHiddenEvent.emit(hidden);
     this._isActive = false;
+    //this.isDisabled = true;
+    this.onHidden.emit({step: this, hidden: hidden} );
   }
 
   get hidden(): boolean {
