@@ -1,49 +1,62 @@
 <p-card>
   <ng-template pTemplate="header">
-    <ul class="nav nav-pills mx-3">
-      <li class="nav-item"
-        *ngFor="let step of steps"
-        [ngClass]="{
-          active: step.isActive && !isCompleted,
-          enabled: !step.isDisabled && !isCompleted,
-          disabled: step.isDisabled,
-          completed: isCompleted
-        }"
-      >
-        <a class="nav-link" (click)="goToStep(step)">{{ step.title }}</a>
-      </li>
-    </ul>
+    <div class="stepper">
+      <div class="stepper-header">
+        Passo {{selectedIndex + 1}} / {{steps.length}}
+        <ol class="steps">
+          <ng-container *ngFor="let step of steps; let i = index">
+            <li
+              class="step"
+              [ngClass]="{
+                active: selectedIndex === i,
+                completed: step.completed && i < selectedIndex,
+                done: step.state === 'done' && i === selectedIndex
+              }"
+              (click)="selectedIndex = i"
+            >
+              <ng-container [ngTemplateOutlet]="step.stepLabel.template"  *ngIf="step.stepLabel; else showLabelText">
+                <ng-content select=".step-bullet"></ng-content>
+                <ng-content select=".step-title"></ng-content>
+              </ng-container>
+
+              <ng-template #showLabelText>
+                -- {{ step.label }} --
+              </ng-template>
+            </li>
+          </ng-container>
+        </ol>
+      </div>
+    </div>
+
   </ng-template>
 
-  <ng-content></ng-content>
+  <div class="stepper-body">
+    <ng-container [ngTemplateOutlet]="selected!.content"></ng-container>
+  </div>
 
   <ng-template pTemplate="footer">
-    <div class="d-flex" *ngIf="!isCompleted">
+    <div class="d-flex">
       <button
         type="button"
         class="btn btn-outline-secondary me-auto"
-        (click)="previous()"
-        [hidden]="!hasPrevStep || !activeStep.showPrev"
+        cdkStepperPrevious
+        *ngIf="hasPrevStep"
       >
         Voltar
       </button>
-
       <button
-        type="button"
         class="btn btn-primary ms-auto"
-        (click)="next()"
-        [disabled]="!activeStep.isValid"
-        [hidden]="!hasNextStep || !activeStep.showNext"
+        cdkStepperNext
+        *ngIf="hasNextStep"
       >
         Próximo
       </button>
 
       <button
         type="button"
-        class="btn btn-primary float-right"
+        class="btn btn-primary ms-auto"
         (click)="complete()"
-        [disabled]="!activeStep.isValid"
-        [hidden]="hasNextStep"
+        *ngIf="lastStep"
       >
         Finalizar
       </button>

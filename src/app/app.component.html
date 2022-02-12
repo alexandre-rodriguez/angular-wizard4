@@ -1,105 +1,141 @@
-<div class="container">
-  <section class="demo">
-    <h1>Wizard</h1>
-
-    <div style="height: 350px">
-      <pucx-wizard (onStepChanged)="onStepChanged($event)" (onNext)="onNextWizard()" (onPrev)="onPrevWizard()" (onComplete)="onCompleteWizard()">
-
-        <pucx-step
-          [title]="'Passo 01'"
-          [isValid]="emailForm.form.valid"
-          (onNext)="onStep1Next()"
-        >
-          <p class="lead">Email é obrigatório para ir para o próximo passo.</p>
-          <form #emailForm="ngForm">
-            <div class="form-group">
-              <label for="exampleInputEmail1">Email</label>
-              <input
-                type="email"
-                class="form-control"
-                id="exampleInputEmail1"
-                name="exampleInputEmail1"
-                aria-describedby="emailHelp"
-                placeholder="Enter email"
-                [(ngModel)]="data.email"
-                required
-              />
+<form [formGroup]="frmStepper" (submit)="submit()">
+  <pucx-wizard formArrayName="steps" [linear]="isLinear">
+    <cdk-step [editable]="isEditable" formGroupName="0" [stepControl]="formArray.get([0])!">
+      <ng-template cdkStepLabel>
+        <div class="step-bullet">1</div>
+        <div class="step-title">Personal Details </div>
+      </ng-template>
+      <div class="container">
+        <div class="field is-horizontal">
+          <div class="field-body">
+            <div class="field">
+              <label class="label">First Name</label>
+              <p class="control is-expanded has-icons-right">
+                <input formControlName="firstName" class="input" type="text" placeholder="First Name">
+                <span class="icon is-small is-right">
+                  <i class="fas fa-check"></i>
+                </span>
+              </p>
             </div>
-          </form>
-        </pucx-step>
-
-        <pucx-step
-          [title]="'Passo 02'"
-          [showNext]="step2.showNext"
-          [showPrev]="step2.showPrev"
-          (onNext)="onStep2Next()"
-          (onPrev)="onStep2Previous()"
-        >
-          <p class="lead">
-            Você também pode controlar quando mostrar/esconder os botões de navegação.
-          </p>
-          <form>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="showNext"
-                  [(ngModel)]="step2.showNext"
-                />
-               Mostrar o botão Próximo
-              </label>
-            </div>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="showPrev"
-                  [(ngModel)]="step2.showPrev"
-                />
-                Mostrar o botão Voltar
-              </label>
-            </div>
-          </form>
-        </pucx-step>
-
-        <pucx-step [title]="'Passo 03'" (onNext)="onStep3Next()" (onPrev)="onStep3Previous()">
-          <form>
-            <div class="form-check">
-              <label class="form-check-label">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="secret"
-                  [(ngModel)]="step3.showSecret"
-                />
-                Exibir passo oculto
-              </label>
-            </div>
-          </form>
-        </pucx-step>
-
-        <pucx-step [title]="'Passo oculto'" [hidden]="!step3.showSecret" (onHidden)="onStepHidden($event)">
-          <p class="lead">
-            Passo oculto
-          </p>
-        </pucx-step>
-
-        <pucx-step [title]="'Passo 04'" (onComplete)="onComplete()" (onPrev)="onStep4Previous()">
-          <div [ngSwitch]="isCompleted">
-            <div *ngSwitchDefault>
-              <p class="lead">Esse é o passo final</p>
-            </div>
-            <div *ngSwitchCase="true">
-              <h4>
-                Você completou todos os passos.
-              </h4>
+            <div class="field">
+              <label class="label">Last Name</label>
+              <p class="control is-expanded has-icons-right">
+                <input formControlName="lastName" class="input" type="text" placeholder="Last Name">
+                <span class="icon is-small is-right">
+                  <i class="fas fa-check"></i>
+                </span>
+              </p>
             </div>
           </div>
-        </pucx-step>
+        </div>
+        <div class="field">
+          <label class="label">Email Address</label>
+          <div class="control has-icons-right">
+            <input formControlName="email" class="input" type="text" placeholder="Text input">
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </cdk-step>
+    <cdk-step #stepAddress [editable]="isEditable" formGroupName="1" [stepControl]="formArray.get([1])!">
+      <ng-template cdkStepLabel>
+        <div class="step-bullet">2</div>
+        <div class="step-title">Address <span class="required">*</span></div>
+      </ng-template>
+      <div class="container">
 
-      </pucx-wizard>
-    </div>
-  </section>
+        <div class="field">
+          <label class="label">Address One</label>
+          <p class="control is-expanded has-icons-right">
+            <input formControlName="addressOne" class="input" type="text" placeholder="Address One">
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </p>
+        </div>
+        <div class="field">
+          <label class="label">Address Two</label>
+          <p class="control is-expanded has-icons-right">
+            <input formControlName="addressTwo" class="input" type="text" placeholder="Address Two">
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </p>
+        </div>
+        <div class="field">
+          <label class="label">City</label>
+          <p class="control is-expanded has-icons-right">
+            <input formControlName="city" class="input" type="text" placeholder="City">
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </p>
+        </div>
+
+        <div class="field">
+          <label class="label">County/State/Region</label>
+          <div class="control has-icons-right">
+            <input formControlName="county" class="input" type="text" placeholder="County/State">
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Country</label>
+          <div class="control has-icons-right">
+            <input formControlName="country" class="input" type="text" placeholder="Country">
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </cdk-step>
+    <cdk-step [editable]="isEditable" formGroupName="2" [stepControl]="formArray.get([2])!">
+      <ng-template cdkStepLabel>
+        <div class="step-bullet">3</div>
+        <div class="step-title">Payment Information</div>
+      </ng-template>
+      <div class="container">
+        <div class="field is-horizontal">
+          <div class="field-body">
+            <div class="field">
+              <label class="label">Credit Card Number</label>
+              <p class="control is-expanded has-icons-right">
+                <input formControlName="creditCardNo" class="input" type="text" placeholder="Credit Card No.">
+                <span class="icon is-small is-right">
+                  <i class="fas fa-check"></i>
+                </span>
+              </p>
+            </div>
+            <div class="field">
+              <label class="label">Expiry</label>
+              <p class="control is-expanded has-icons-right">
+                <input formControlName="expiryDate" class="input" type="text" placeholder="10/2020">
+                <span class="icon is-small is-right">
+                  <i class="fas fa-check"></i>
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">CVV Code</label>
+          <div class="control has-icons-right">
+            <input formControlName="cvvCode" class="input" type="number" placeholder="CVV Code">
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </cdk-step>
+  </pucx-wizard>
+</form>
+
+<div *ngIf="frmValues" class="content has-content-centered">
+  {{ frmValues | json }}
 </div>

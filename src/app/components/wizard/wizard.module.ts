@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { WizardComponent } from './wizard.component';
 import { StepComponent } from './step/step.component';
 import {CardModule} from 'primeng/card'
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 
 
@@ -13,7 +14,8 @@ import {CardModule} from 'primeng/card'
   ],
   imports: [
     CommonModule,
-    CardModule
+    CardModule,
+    CdkStepperModule
   ],
   exports: [
     WizardComponent,

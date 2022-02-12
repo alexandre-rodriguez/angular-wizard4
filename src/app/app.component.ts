@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StepComponent } from './components/wizard/step/step.component';
 
 @Component({
@@ -8,70 +9,56 @@ import { StepComponent } from './components/wizard/step/step.component';
 })
 export class AppComponent {
 
-  ngOnInit(): void {}
+  @Input()
+  isLinear = true;
 
-  step2: any = {
-    showNext: true,
-    showPrev: true
-  };
+  @Input()
+  isEditable = true;
 
-  step3: any = {
-    showSecret: false
-  };
+  frmValues: object = {};
 
-  data: any = {
-    email: 'muk@gmail.com'
-  };
+  frmStepper!: FormGroup;
 
-  isCompleted: boolean = false;
-
-  onNextWizard() {
-    console.log('onNextWizard ');
+  get formArray(): AbstractControl {
+    return this.frmStepper.get('steps')!;
   }
 
-  onPrevWizard() {
-    console.log('onPrevWizard ');
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.frmStepper = this.fb.group({
+      steps: this.fb.array([
+        this.fb.group({
+          firstName: ['First Name', Validators.compose([Validators.required])],
+          lastName: ['Last Name', Validators.compose([Validators.required])],
+          phone: [null], // optional
+          email: [
+            'johndoe@example.com',
+            Validators.compose([Validators.required, Validators.email]),
+          ],
+        }),
+        this.fb.group({
+          addressOne: [null, Validators.compose([Validators.required])],
+          addressTwo: [null], // optional
+          city: [null, Validators.compose([Validators.required])],
+          county: [null, Validators.compose([Validators.required])],
+          country: [null, Validators.compose([Validators.required])],
+        }),
+        this.fb.group({
+          creditCardNo: [
+            '4111 1111 1111 1111',
+            Validators.compose([Validators.required]),
+          ],
+          expiryDate: ['', Validators.compose([Validators.required])],
+          cvvCode: ['', Validators.compose([Validators.required])],
+        }),
+      ]),
+    });
   }
 
-  onCompleteWizard() {
-    console.log('onPrevWizard ');
-  }
-
-  onStep1Next() {
-    console.log('Botão Próximo - Chamou o next do passo 01');
-  }
-
-  onStep2Next() {
-    console.log('Botão Próximo - Chamou o next do passo 02');
-  }
-
-  onStep2Previous() {
-    console.log('Botão Voltar - Chamou o next do passo 02');
-  }
-
-  onStep3Next() {
-    console.log('Botão Próximo - Chamou o next do passo 03');
-  }
-
-  onStep3Previous() {
-    console.log('Botão Voltar - Chamou o next do passo 03');
-  }
-
-  onStep4Previous() {
-    console.log('Botão Voltar - Chamou o next do passo 04');
-  }
-
-  onStepHidden(evento: boolean) {
-    console.log('esconder passo oculto ->', evento);
-  }
-
-  onComplete() {
-    console.log('Chamou o complete');
-    this.isCompleted = true;
-  }
-
-  onStepChanged(step: StepComponent) {
-    console.log('Mudou para ' + step.title);
+  submit(): void {
+    console.log(this.frmStepper.value);
+    this.frmValues = this.frmStepper.value;
   }
 
 }
