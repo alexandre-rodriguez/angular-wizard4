@@ -1,9 +1,13 @@
 import {
   AfterContentInit,
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   HostListener,
+  Inject,
   Input,
   OnInit,
   Output,
@@ -12,6 +16,9 @@ import {
 } from '@angular/core';
 
 import { CdkStepper, STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper'
+import { MenuItem } from 'primeng/api';
+import { Directionality } from '@angular/cdk/bidi';
+import { DOCUMENT } from '@angular/common';
 
 
 @Component({
@@ -25,6 +32,24 @@ import { CdkStepper, STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper'
     }],
 })
 export class WizardComponent extends CdkStepper {
+
+  constructor(private dir: Directionality, private changeDetectorRef: ChangeDetectorRef, private elementRef: ElementRef<HTMLElement>, @Inject(DOCUMENT) private document: Document) {
+    super(dir, changeDetectorRef, elementRef, document);
+  }
+
+
+  items!: MenuItem[];
+
+  override ngAfterViewInit(): void {
+    super.ngAfterViewInit();
+
+    this.items = this.steps.map(step => {
+      return {label: 'step 0001'}
+    });
+
+    this.changeDetectorRef.detectChanges();
+  }
+
   isNextButtonHidden() {
     return !(this.steps.length === this.selectedIndex + 1);
   }

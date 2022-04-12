@@ -1,33 +1,35 @@
 <p-card>
   <ng-template pTemplate="header">
-    <div class="stepper">
-      <div class="stepper-header">
+<!--
+      <div class="stepper">
+        <div class="stepper-header">
         Passo {{selectedIndex + 1}} / {{steps.length}}
         <ol class="steps">
           <ng-container *ngFor="let step of steps; let i = index">
             <li
-              class="step"
-              [ngClass]="{
-                active: selectedIndex === i,
-                completed: step.completed && i < selectedIndex,
-                done: step.state === 'done' && i === selectedIndex
-              }"
-              (click)="selectedIndex = i"
+            class="step"
+            [ngClass]="{
+              active: selectedIndex === i,
+              completed: step.completed && i < selectedIndex,
+              done: step.state === 'done' && i === selectedIndex
+            }"
+            (click)="selectedIndex = i"
             >
-              <ng-container [ngTemplateOutlet]="step.stepLabel.template"  *ngIf="step.stepLabel; else showLabelText">
-                <ng-content select=".step-bullet"></ng-content>
-                <ng-content select=".step-title"></ng-content>
-              </ng-container>
+            <ng-container [ngTemplateOutlet]="step.stepLabel.template"  *ngIf="step.stepLabel; else showLabelText">
+              <ng-content select=".step-bullet"></ng-content>
+              <ng-content select=".step-title"></ng-content>
+            </ng-container>
 
-              <ng-template #showLabelText>
-                -- {{ step.label }} --
-              </ng-template>
-            </li>
-          </ng-container>
-        </ol>
-      </div>
+            <ng-template #showLabelText>
+              -- {{ step.label }} --
+            </ng-template>
+          </li>
+        </ng-container>
+      </ol>
     </div>
-
+  </div>
+-->
+    <p-steps [model]="items" [readonly]="false" *ngIf="true" [(activeIndex)]="selectedIndex"></p-steps>
   </ng-template>
 
   <div class="stepper-body">

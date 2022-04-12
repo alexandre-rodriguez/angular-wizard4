@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StepComponent } from './components/wizard/step/step.component';
 
 @Component({
   selector: 'pucx-root',
